@@ -47,3 +47,40 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
+
+// Delete package
+export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params
+    const token = request.cookies.get("admin-token")?.value
+
+    if (!token || !verifyToken(token)) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    // Delete tracking events first (due to foreign key constraint)
+    const { error: eventsError } = await supabase
+      .from("tracking_events")
+      .delete()
+      .eq("package_id", id)
+
+    if (eventsError) {
+      throw eventsError
+    }
+
+    // Delete the package
+    const { error: packageError } = await supabase
+      .from("packages")
+      .delete()
+      .eq("id", id)
+
+    if (packageError) {
+      throw packageError
+    }
+
+    return NextResponse.json({ message: "Package deleted successfully" })
+  } catch (error) {
+    console.error("Error deleting package:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
+}

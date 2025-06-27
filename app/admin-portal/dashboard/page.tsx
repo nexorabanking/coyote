@@ -7,9 +7,10 @@ import { Input } from "@/components/ui/input"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Edit, Truck, Search, LogOut, Package, Clock } from "lucide-react"
+import { Plus, Edit, Truck, Search, LogOut, Package, Clock, Trash2 } from "lucide-react"
 import { toast } from "@/hooks/use-toast"
 
 interface AdminPackage {
@@ -147,6 +148,30 @@ export default function AdminDashboard() {
       toast({
         title: "Error",
         description: "Failed to update package",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleDeletePackage = async (packageId: string, trackingId: string) => {
+    try {
+      const response = await fetch(`/api/admin/packages/${packageId}`, {
+        method: "DELETE",
+      })
+
+      if (response.ok) {
+        setPackages(packages.filter((pkg) => pkg.id !== packageId))
+        toast({
+          title: "Package Deleted",
+          description: `Package ${trackingId} has been deleted successfully.`,
+        })
+      } else {
+        throw new Error("Failed to delete package")
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete package",
         variant: "destructive",
       })
     }
@@ -456,73 +481,101 @@ export default function AdminDashboard() {
                       <span className="font-mono text-sm font-medium">{pkg.tracking_id}</span>
                       <Badge className={getStatusColor(pkg.status)}>{pkg.status}</Badge>
                     </div>
-                    <Dialog
-                      open={isEditDialogOpen && selectedPackage?.id === pkg.id}
-                      onOpenChange={(open) => {
-                        setIsEditDialogOpen(open)
-                        if (!open) setSelectedPackage(null)
-                      }}
-                    >
-                      <DialogTrigger asChild>
-                        <Button variant="outline" size="sm" onClick={() => setSelectedPackage(pkg)}>
-                          <Edit className="h-4 w-4 mr-2" />
-                          Edit
-                        </Button>
-                      </DialogTrigger>
-                      <DialogContent className="max-w-md">
-                        <DialogHeader>
-                          <DialogTitle>Update Package: {pkg.tracking_id}</DialogTitle>
-                        </DialogHeader>
-                        {selectedPackage && (
-                          <div className="space-y-4">
-                            <div>
-                              <Label htmlFor="edit-status">Status</Label>
-                              <Select
-                                value={selectedPackage.status}
-                                onValueChange={(value) => setSelectedPackage({ ...selectedPackage, status: value })}
-                              >
-                                <SelectTrigger>
-                                  <SelectValue />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  <SelectItem value="Package Picked Up">Package Picked Up</SelectItem>
-                                  <SelectItem value="In Transit">In Transit</SelectItem>
-                                  <SelectItem value="Out for Delivery">Out for Delivery</SelectItem>
-                                  <SelectItem value="Delivered">Delivered</SelectItem>
-                                  <SelectItem value="Exception">Exception</SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </div>
+                    <div className="flex items-center gap-2">
+                      <Dialog
+                        open={isEditDialogOpen && selectedPackage?.id === pkg.id}
+                        onOpenChange={(open) => {
+                          setIsEditDialogOpen(open)
+                          if (!open) setSelectedPackage(null)
+                        }}
+                      >
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="sm" onClick={() => setSelectedPackage(pkg)}>
+                            <Edit className="h-4 w-4 mr-2" />
+                            Edit
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-md">
+                          <DialogHeader>
+                            <DialogTitle>Update Package: {pkg.tracking_id}</DialogTitle>
+                          </DialogHeader>
+                          {selectedPackage && (
+                            <div className="space-y-4">
+                              <div>
+                                <Label htmlFor="edit-status">Status</Label>
+                                <Select
+                                  value={selectedPackage.status}
+                                  onValueChange={(value) => setSelectedPackage({ ...selectedPackage, status: value })}
+                                >
+                                  <SelectTrigger>
+                                    <SelectValue />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    <SelectItem value="Package Picked Up">Package Picked Up</SelectItem>
+                                    <SelectItem value="In Transit">In Transit</SelectItem>
+                                    <SelectItem value="Out for Delivery">Out for Delivery</SelectItem>
+                                    <SelectItem value="Delivered">Delivered</SelectItem>
+                                    <SelectItem value="Exception">Exception</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                              </div>
 
-                            <div>
-                              <Label htmlFor="edit-currentLocation">Current Location</Label>
-                              <Input
-                                id="edit-currentLocation"
-                                value={selectedPackage.current_location}
-                                onChange={(e) =>
-                                  setSelectedPackage({ ...selectedPackage, current_location: e.target.value })
-                                }
-                              />
-                            </div>
+                              <div>
+                                <Label htmlFor="edit-currentLocation">Current Location</Label>
+                                <Input
+                                  id="edit-currentLocation"
+                                  value={selectedPackage.current_location}
+                                  onChange={(e) =>
+                                    setSelectedPackage({ ...selectedPackage, current_location: e.target.value })
+                                  }
+                                />
+                              </div>
 
-                            <div>
-                              <Label htmlFor="edit-estimatedDelivery">Estimated Delivery</Label>
-                              <Input
-                                id="edit-estimatedDelivery"
-                                value={selectedPackage.estimated_delivery}
-                                onChange={(e) =>
-                                  setSelectedPackage({ ...selectedPackage, estimated_delivery: e.target.value })
-                                }
-                              />
-                            </div>
+                              <div>
+                                <Label htmlFor="edit-estimatedDelivery">Estimated Delivery</Label>
+                                <Input
+                                  id="edit-estimatedDelivery"
+                                  value={selectedPackage.estimated_delivery}
+                                  onChange={(e) =>
+                                    setSelectedPackage({ ...selectedPackage, estimated_delivery: e.target.value })
+                                  }
+                                />
+                              </div>
 
-                            <Button onClick={handleUpdatePackage} className="w-full bg-orange-600 hover:bg-orange-700">
-                              Update Package
-                            </Button>
-                          </div>
-                        )}
-                      </DialogContent>
-                    </Dialog>
+                              <Button onClick={handleUpdatePackage} className="w-full bg-orange-600 hover:bg-orange-700">
+                                Update Package
+                              </Button>
+                            </div>
+                          )}
+                        </DialogContent>
+                      </Dialog>
+                      <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                          <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700 hover:bg-red-50">
+                            <Trash2 className="h-4 w-4 mr-2" />
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                          <AlertDialogHeader>
+                            <AlertDialogTitle>Delete Package</AlertDialogTitle>
+                            <AlertDialogDescription>
+                              Are you sure you want to delete package <strong>{pkg.tracking_id}</strong>? 
+                              This action cannot be undone and will permanently remove all tracking information.
+                            </AlertDialogDescription>
+                          </AlertDialogHeader>
+                          <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction 
+                              onClick={() => handleDeletePackage(pkg.id, pkg.tracking_id)}
+                              className="bg-red-600 hover:bg-red-700"
+                            >
+                              Delete Package
+                            </AlertDialogAction>
+                          </AlertDialogFooter>
+                        </AlertDialogContent>
+                      </AlertDialog>
+                    </div>
                   </div>
 
                   <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
