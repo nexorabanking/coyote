@@ -7,11 +7,8 @@ export const metadata: Metadata = {
   generator: 'Coyote Logistics',
   icons: {
     icon: [
-      { url: '/favicon.ico' },
       { url: '/favicon.svg', type: 'image/svg+xml' },
-    ],
-    shortcut: '/favicon.ico',
-    apple: '/favicon.ico',
+    ]
   },
 }
 
