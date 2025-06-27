@@ -5,6 +5,9 @@ export const metadata: Metadata = {
   title: 'Coyote Logistics',
   description: 'Coyote Logistics',
   generator: 'Coyote Logistics',
+  icons: {
+    icon: '/favicon.png',
+  },
 }
 
 export default function RootLayout({

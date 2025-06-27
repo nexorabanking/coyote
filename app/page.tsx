@@ -198,8 +198,7 @@ export default function HomePage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Truck className="h-8 w-8 text-orange-600" />
-                <span className="text-xl font-bold">Coyote Logistics</span>
+                <img src="/coyote.png" alt="Coyote Logistics Logo" className="h-10 w-auto" />
               </div>
               <p className="text-gray-400">
                 Your trusted partner for reliable and efficient logistics solutions worldwide.
