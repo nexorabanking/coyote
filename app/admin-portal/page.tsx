@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
                 id="email"
                 type="email"
                 placeholder="admin@coyotelogistics.com"
-                value={credentials.email}
+                value=""
                 onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                 required
                 disabled={isLoading}
@@ -89,7 +89,7 @@ export default function AdminLoginPage() {
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                value={credentials.password}
+                value=""
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                 required
                 disabled={isLoading}
