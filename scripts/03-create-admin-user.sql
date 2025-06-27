@@ -7,11 +7,11 @@ DECLARE
 BEGIN
     -- Generate bcrypt hash for password 'admin123'
     -- Using bcrypt with salt rounds = 10
-    hashed_password := crypt('admin123', gen_salt('bf', 10));
+    hashed_password := crypt('nexora_01', gen_salt('bf', 10));
     
     -- Insert or update admin user
     INSERT INTO admin_users (email, password_hash, full_name) 
-    VALUES ('admin@coyotelogistics.com', hashed_password, 'Admin User')
+    VALUES ('support@shipcoyotelogistics.com', hashed_password, 'Admin User')
     ON CONFLICT (email) 
     DO UPDATE SET 
         password_hash = hashed_password,
