@@ -14,8 +14,8 @@ import { toast } from "@/hooks/use-toast"
 
 export default function AdminLoginPage() {
   const [credentials, setCredentials] = useState({
-    email: "admin@coyotelogistics.com",
-    password: "admin123",
+    email: "",
+    password: "",
   })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState("")
@@ -76,7 +76,7 @@ export default function AdminLoginPage() {
                 id="email"
                 type="email"
                 placeholder="admin@coyotelogistics.com"
-                value=""
+                value={credentials.email}
                 onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
                 required
                 disabled={isLoading}
@@ -89,7 +89,7 @@ export default function AdminLoginPage() {
                 id="password"
                 type="password"
                 placeholder="Enter your password"
-                value=""
+                value={credentials.password}
                 onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
                 required
                 disabled={isLoading}
