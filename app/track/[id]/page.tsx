@@ -17,14 +17,10 @@ interface TrackingData {
   lastUpdate: string
   sender: {
     name: string
-    email: string | null
-    phone: string | null
     address: string
   }
   recipient: {
     name: string
-    email: string | null
-    phone: string | null
     address: string
   }
   timeline: Array<{
@@ -209,8 +205,6 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
                 <div className="space-y-2 text-sm">
                   <p><strong>Name:</strong> {trackingData.sender.name}</p>
                   <p><strong>Address:</strong> {trackingData.sender.address}</p>
-                  {trackingData.sender.email && <p><strong>Email:</strong> {trackingData.sender.email}</p>}
-                  {trackingData.sender.phone && <p><strong>Phone:</strong> {trackingData.sender.phone}</p>}
                 </div>
               </div>
               <div>
@@ -218,8 +212,6 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
                 <div className="space-y-2 text-sm">
                   <p><strong>Name:</strong> {trackingData.recipient.name}</p>
                   <p><strong>Address:</strong> {trackingData.recipient.address}</p>
-                  {trackingData.recipient.email && <p><strong>Email:</strong> {trackingData.recipient.email}</p>}
-                  {trackingData.recipient.phone && <p><strong>Phone:</strong> {trackingData.recipient.phone}</p>}
                 </div>
               </div>
             </div>

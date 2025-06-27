@@ -3,8 +3,6 @@
 
 -- Add sender information columns
 ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_name TEXT;
-ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_email TEXT;
-ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_phone TEXT;
 ALTER TABLE packages ADD COLUMN IF NOT EXISTS sender_address TEXT;
 
 -- Add recipient address column

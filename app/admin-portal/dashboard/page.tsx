@@ -16,12 +16,8 @@ interface AdminPackage {
   id: string
   tracking_id: string
   sender_name: string
-  sender_email: string | null
-  sender_phone: string | null
   sender_address: string
   recipient_name: string
-  recipient_email: string | null
-  recipient_phone: string | null
   recipient_address: string
   current_location: string
   destination: string
@@ -42,12 +38,8 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [newPackage, setNewPackage] = useState({
     sender_name: "",
-    sender_email: "",
-    sender_phone: "",
     sender_address: "",
     recipient_name: "",
-    recipient_email: "",
-    recipient_phone: "",
     recipient_address: "",
     current_location: "",
     destination: "",
@@ -97,12 +89,8 @@ export default function AdminDashboard() {
         setPackages([data.package, ...packages])
         setNewPackage({
           sender_name: "",
-          sender_email: "",
-          sender_phone: "",
           sender_address: "",
           recipient_name: "",
-          recipient_email: "",
-          recipient_phone: "",
           recipient_address: "",
           current_location: "",
           destination: "",
@@ -314,137 +302,98 @@ export default function AdminDashboard() {
                 Create Package
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-md">
+            <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>Create New Package</DialogTitle>
               </DialogHeader>
-              <div className="space-y-4">
-                {/* Sender Information */}
-                <div className="space-y-3">
-                  <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Sender Information</h3>
-                  <div>
-                    <Label htmlFor="sender-name">Sender Name</Label>
-                    <Input
-                      id="sender-name"
-                      value={newPackage.sender_name}
-                      onChange={(e) => setNewPackage({ ...newPackage, sender_name: e.target.value })}
-                      placeholder="Enter sender name"
-                    />
+              <div className="space-y-6">
+                {/* Sender and Recipient Information */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Sender Information */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Sender Information</h3>
+                    <div>
+                      <Label htmlFor="sender-name">Sender Name</Label>
+                      <Input
+                        id="sender-name"
+                        value={newPackage.sender_name}
+                        onChange={(e) => setNewPackage({ ...newPackage, sender_name: e.target.value })}
+                        placeholder="Enter sender name"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="sender-address">Sender Address</Label>
+                      <Input
+                        id="sender-address"
+                        value={newPackage.sender_address}
+                        onChange={(e) => setNewPackage({ ...newPackage, sender_address: e.target.value })}
+                        placeholder="Enter sender address"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="sender-email">Sender Email</Label>
-                    <Input
-                      id="sender-email"
-                      type="email"
-                      value={newPackage.sender_email}
-                      onChange={(e) => setNewPackage({ ...newPackage, sender_email: e.target.value })}
-                      placeholder="Enter sender email"
-                    />
-                  </div>
+                  {/* Recipient Information */}
+                  <div className="space-y-3">
+                    <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Recipient Information</h3>
+                    <div>
+                      <Label htmlFor="recipient-name">Recipient Name</Label>
+                      <Input
+                        id="recipient-name"
+                        value={newPackage.recipient_name}
+                        onChange={(e) => setNewPackage({ ...newPackage, recipient_name: e.target.value })}
+                        placeholder="Enter recipient name"
+                      />
+                    </div>
 
-                  <div>
-                    <Label htmlFor="sender-phone">Sender Phone</Label>
-                    <Input
-                      id="sender-phone"
-                      type="tel"
-                      value={newPackage.sender_phone}
-                      onChange={(e) => setNewPackage({ ...newPackage, sender_phone: e.target.value })}
-                      placeholder="Enter sender phone"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="sender-address">Sender Address</Label>
-                    <Input
-                      id="sender-address"
-                      value={newPackage.sender_address}
-                      onChange={(e) => setNewPackage({ ...newPackage, sender_address: e.target.value })}
-                      placeholder="Enter sender address"
-                    />
-                  </div>
-                </div>
-
-                {/* Recipient Information */}
-                <div className="space-y-3">
-                  <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Recipient Information</h3>
-                  <div>
-                    <Label htmlFor="recipient-name">Recipient Name</Label>
-                    <Input
-                      id="recipient-name"
-                      value={newPackage.recipient_name}
-                      onChange={(e) => setNewPackage({ ...newPackage, recipient_name: e.target.value })}
-                      placeholder="Enter recipient name"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="recipient-email">Recipient Email</Label>
-                    <Input
-                      id="recipient-email"
-                      type="email"
-                      value={newPackage.recipient_email}
-                      onChange={(e) => setNewPackage({ ...newPackage, recipient_email: e.target.value })}
-                      placeholder="Enter recipient email"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="recipient-phone">Recipient Phone</Label>
-                    <Input
-                      id="recipient-phone"
-                      type="tel"
-                      value={newPackage.recipient_phone}
-                      onChange={(e) => setNewPackage({ ...newPackage, recipient_phone: e.target.value })}
-                      placeholder="Enter recipient phone"
-                    />
-                  </div>
-
-                  <div>
-                    <Label htmlFor="recipient-address">Recipient Address</Label>
-                    <Input
-                      id="recipient-address"
-                      value={newPackage.recipient_address}
-                      onChange={(e) => setNewPackage({ ...newPackage, recipient_address: e.target.value })}
-                      placeholder="Enter recipient address"
-                    />
+                    <div>
+                      <Label htmlFor="recipient-address">Recipient Address</Label>
+                      <Input
+                        id="recipient-address"
+                        value={newPackage.recipient_address}
+                        onChange={(e) => setNewPackage({ ...newPackage, recipient_address: e.target.value })}
+                        placeholder="Enter recipient address"
+                      />
+                    </div>
                   </div>
                 </div>
 
                 {/* Package Details */}
                 <div className="space-y-3">
                   <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Package Details</h3>
-                  <div>
-                    <Label htmlFor="currentLocation">Current Location</Label>
-                    <Input
-                      id="currentLocation"
-                      value={newPackage.current_location}
-                      onChange={(e) => setNewPackage({ ...newPackage, current_location: e.target.value })}
-                      placeholder="e.g., Chicago, IL Hub"
-                    />
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="currentLocation">Current Location</Label>
+                      <Input
+                        id="currentLocation"
+                        value={newPackage.current_location}
+                        onChange={(e) => setNewPackage({ ...newPackage, current_location: e.target.value })}
+                        placeholder="e.g., Chicago, IL Hub"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="destination">Destination</Label>
+                      <Input
+                        id="destination"
+                        value={newPackage.destination}
+                        onChange={(e) => setNewPackage({ ...newPackage, destination: e.target.value })}
+                        placeholder="e.g., New York, NY"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <Label htmlFor="destination">Destination</Label>
-                    <Input
-                      id="destination"
-                      value={newPackage.destination}
-                      onChange={(e) => setNewPackage({ ...newPackage, destination: e.target.value })}
-                      placeholder="e.g., New York, NY"
-                    />
-                  </div>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    <div>
+                      <Label htmlFor="estimatedDelivery">Estimated Delivery</Label>
+                      <Input
+                        id="estimatedDelivery"
+                        value={newPackage.estimated_delivery}
+                        onChange={(e) => setNewPackage({ ...newPackage, estimated_delivery: e.target.value })}
+                        placeholder="e.g., Tomorrow by 6:00 PM"
+                      />
+                    </div>
 
-                  <div>
-                    <Label htmlFor="estimatedDelivery">Estimated Delivery</Label>
-                    <Input
-                      id="estimatedDelivery"
-                      value={newPackage.estimated_delivery}
-                      onChange={(e) => setNewPackage({ ...newPackage, estimated_delivery: e.target.value })}
-                      placeholder="e.g., Tomorrow by 6:00 PM"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="weight">Weight</Label>
                       <Input
@@ -581,15 +530,11 @@ export default function AdminDashboard() {
                       <p className="font-medium text-gray-800 mb-2">Sender</p>
                       <p><strong>Name:</strong> {pkg.sender_name}</p>
                       <p><strong>Address:</strong> {pkg.sender_address}</p>
-                      {pkg.sender_email && <p><strong>Email:</strong> {pkg.sender_email}</p>}
-                      {pkg.sender_phone && <p><strong>Phone:</strong> {pkg.sender_phone}</p>}
                     </div>
                     <div>
                       <p className="font-medium text-gray-800 mb-2">Recipient</p>
                       <p><strong>Name:</strong> {pkg.recipient_name}</p>
                       <p><strong>Address:</strong> {pkg.recipient_address}</p>
-                      {pkg.recipient_email && <p><strong>Email:</strong> {pkg.recipient_email}</p>}
-                      {pkg.recipient_phone && <p><strong>Phone:</strong> {pkg.recipient_phone}</p>}
                     </div>
                     <div>
                       <p className="font-medium text-gray-800 mb-2">Package Details</p>

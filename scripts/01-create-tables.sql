@@ -14,13 +14,9 @@ CREATE TABLE IF NOT EXISTS packages (
   tracking_id TEXT UNIQUE NOT NULL,
   -- Sender information
   sender_name TEXT NOT NULL,
-  sender_email TEXT,
-  sender_phone TEXT,
   sender_address TEXT NOT NULL,
   -- Recipient information
   recipient_name TEXT NOT NULL,
-  recipient_email TEXT,
-  recipient_phone TEXT,
   recipient_address TEXT NOT NULL,
   -- Package details
   current_location TEXT NOT NULL,
