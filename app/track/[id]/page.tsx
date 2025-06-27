@@ -15,6 +15,18 @@ interface TrackingData {
   destination: string
   estimatedDelivery: string
   lastUpdate: string
+  sender: {
+    name: string
+    email: string | null
+    phone: string | null
+    address: string
+  }
+  recipient: {
+    name: string
+    email: string | null
+    phone: string | null
+    address: string
+  }
   timeline: Array<{
     date: string
     time: string
@@ -179,6 +191,35 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
                 <div>
                   <p className="text-sm text-gray-500">Estimated Delivery</p>
                   <p className="font-medium">{trackingData.estimatedDelivery}</p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Sender and Recipient Information */}
+        <Card className="border-0 shadow-lg mb-8">
+          <CardHeader>
+            <CardTitle>Contact Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div>
+                <h3 className="font-medium text-gray-900 mb-3">Sender</h3>
+                <div className="space-y-2 text-sm">
+                  <p><strong>Name:</strong> {trackingData.sender.name}</p>
+                  <p><strong>Address:</strong> {trackingData.sender.address}</p>
+                  {trackingData.sender.email && <p><strong>Email:</strong> {trackingData.sender.email}</p>}
+                  {trackingData.sender.phone && <p><strong>Phone:</strong> {trackingData.sender.phone}</p>}
+                </div>
+              </div>
+              <div>
+                <h3 className="font-medium text-gray-900 mb-3">Recipient</h3>
+                <div className="space-y-2 text-sm">
+                  <p><strong>Name:</strong> {trackingData.recipient.name}</p>
+                  <p><strong>Address:</strong> {trackingData.recipient.address}</p>
+                  {trackingData.recipient.email && <p><strong>Email:</strong> {trackingData.recipient.email}</p>}
+                  {trackingData.recipient.phone && <p><strong>Phone:</strong> {trackingData.recipient.phone}</p>}
                 </div>
               </div>
             </div>

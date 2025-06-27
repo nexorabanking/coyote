@@ -36,6 +36,18 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       destination: packageData.destination,
       estimatedDelivery: packageData.estimated_delivery,
       lastUpdate: new Date(packageData.updated_at).toLocaleString(),
+      sender: {
+        name: packageData.sender_name,
+        email: packageData.sender_email,
+        phone: packageData.sender_phone,
+        address: packageData.sender_address,
+      },
+      recipient: {
+        name: packageData.recipient_name,
+        email: packageData.recipient_email,
+        phone: packageData.recipient_phone,
+        address: packageData.recipient_address,
+      },
       timeline: events.map((event) => ({
         date: new Date(event.event_date).toLocaleDateString("en-US", {
           month: "short",

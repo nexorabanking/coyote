@@ -15,8 +15,14 @@ import { toast } from "@/hooks/use-toast"
 interface AdminPackage {
   id: string
   tracking_id: string
+  sender_name: string
+  sender_email: string | null
+  sender_phone: string | null
+  sender_address: string
   recipient_name: string
   recipient_email: string | null
+  recipient_phone: string | null
+  recipient_address: string
   current_location: string
   destination: string
   estimated_delivery: string
@@ -35,8 +41,14 @@ export default function AdminDashboard() {
   const [selectedPackage, setSelectedPackage] = useState<AdminPackage | null>(null)
   const [loading, setLoading] = useState(true)
   const [newPackage, setNewPackage] = useState({
+    sender_name: "",
+    sender_email: "",
+    sender_phone: "",
+    sender_address: "",
     recipient_name: "",
     recipient_email: "",
+    recipient_phone: "",
+    recipient_address: "",
     current_location: "",
     destination: "",
     estimated_delivery: "",
@@ -84,8 +96,14 @@ export default function AdminDashboard() {
         const data = await response.json()
         setPackages([data.package, ...packages])
         setNewPackage({
+          sender_name: "",
+          sender_email: "",
+          sender_phone: "",
+          sender_address: "",
           recipient_name: "",
           recipient_email: "",
+          recipient_phone: "",
+          recipient_address: "",
           current_location: "",
           destination: "",
           estimated_delivery: "",
@@ -158,7 +176,10 @@ export default function AdminDashboard() {
   const filteredPackages = packages.filter(
     (pkg) =>
       pkg.tracking_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.sender_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.sender_address.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.recipient_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pkg.recipient_address.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.destination.toLowerCase().includes(searchTerm.toLowerCase()),
   )
 
@@ -279,7 +300,7 @@ export default function AdminDashboard() {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             <Input
-              placeholder="Search by tracking ID, recipient, or destination..."
+              placeholder="Search by tracking ID, sender, recipient, or addresses..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-10"
@@ -298,95 +319,170 @@ export default function AdminDashboard() {
                 <DialogTitle>Create New Package</DialogTitle>
               </DialogHeader>
               <div className="space-y-4">
-                <div>
-                  <Label htmlFor="recipient">Recipient Name</Label>
-                  <Input
-                    id="recipient"
-                    value={newPackage.recipient_name}
-                    onChange={(e) => setNewPackage({ ...newPackage, recipient_name: e.target.value })}
-                    placeholder="Enter recipient name"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="email">Recipient Email</Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    value={newPackage.recipient_email}
-                    onChange={(e) => setNewPackage({ ...newPackage, recipient_email: e.target.value })}
-                    placeholder="Enter recipient email"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="currentLocation">Current Location</Label>
-                  <Input
-                    id="currentLocation"
-                    value={newPackage.current_location}
-                    onChange={(e) => setNewPackage({ ...newPackage, current_location: e.target.value })}
-                    placeholder="e.g., Chicago, IL Hub"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="destination">Destination</Label>
-                  <Input
-                    id="destination"
-                    value={newPackage.destination}
-                    onChange={(e) => setNewPackage({ ...newPackage, destination: e.target.value })}
-                    placeholder="e.g., New York, NY"
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="estimatedDelivery">Estimated Delivery</Label>
-                  <Input
-                    id="estimatedDelivery"
-                    value={newPackage.estimated_delivery}
-                    onChange={(e) => setNewPackage({ ...newPackage, estimated_delivery: e.target.value })}
-                    placeholder="e.g., Tomorrow by 6:00 PM"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
+                {/* Sender Information */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Sender Information</h3>
                   <div>
-                    <Label htmlFor="weight">Weight</Label>
+                    <Label htmlFor="sender-name">Sender Name</Label>
                     <Input
-                      id="weight"
-                      value={newPackage.weight}
-                      onChange={(e) => setNewPackage({ ...newPackage, weight: e.target.value })}
-                      placeholder="e.g., 2.5 lbs"
+                      id="sender-name"
+                      value={newPackage.sender_name}
+                      onChange={(e) => setNewPackage({ ...newPackage, sender_name: e.target.value })}
+                      placeholder="Enter sender name"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="dimensions">Dimensions</Label>
+                    <Label htmlFor="sender-email">Sender Email</Label>
                     <Input
-                      id="dimensions"
-                      value={newPackage.dimensions}
-                      onChange={(e) => setNewPackage({ ...newPackage, dimensions: e.target.value })}
-                      placeholder="e.g., 12x8x4"
+                      id="sender-email"
+                      type="email"
+                      value={newPackage.sender_email}
+                      onChange={(e) => setNewPackage({ ...newPackage, sender_email: e.target.value })}
+                      placeholder="Enter sender email"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="sender-phone">Sender Phone</Label>
+                    <Input
+                      id="sender-phone"
+                      type="tel"
+                      value={newPackage.sender_phone}
+                      onChange={(e) => setNewPackage({ ...newPackage, sender_phone: e.target.value })}
+                      placeholder="Enter sender phone"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="sender-address">Sender Address</Label>
+                    <Input
+                      id="sender-address"
+                      value={newPackage.sender_address}
+                      onChange={(e) => setNewPackage({ ...newPackage, sender_address: e.target.value })}
+                      placeholder="Enter sender address"
                     />
                   </div>
                 </div>
 
-                <div>
-                  <Label htmlFor="service">Service Type</Label>
-                  <Select
-                    value={newPackage.service_type}
-                    onValueChange={(value) => setNewPackage({ ...newPackage, service_type: value })}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Express Shipping">Express Shipping</SelectItem>
-                      <SelectItem value="Standard Shipping">Standard Shipping</SelectItem>
-                      <SelectItem value="Overnight">Overnight</SelectItem>
-                      <SelectItem value="Ground">Ground</SelectItem>
-                    </SelectContent>
-                  </Select>
+                {/* Recipient Information */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Recipient Information</h3>
+                  <div>
+                    <Label htmlFor="recipient-name">Recipient Name</Label>
+                    <Input
+                      id="recipient-name"
+                      value={newPackage.recipient_name}
+                      onChange={(e) => setNewPackage({ ...newPackage, recipient_name: e.target.value })}
+                      placeholder="Enter recipient name"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="recipient-email">Recipient Email</Label>
+                    <Input
+                      id="recipient-email"
+                      type="email"
+                      value={newPackage.recipient_email}
+                      onChange={(e) => setNewPackage({ ...newPackage, recipient_email: e.target.value })}
+                      placeholder="Enter recipient email"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="recipient-phone">Recipient Phone</Label>
+                    <Input
+                      id="recipient-phone"
+                      type="tel"
+                      value={newPackage.recipient_phone}
+                      onChange={(e) => setNewPackage({ ...newPackage, recipient_phone: e.target.value })}
+                      placeholder="Enter recipient phone"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="recipient-address">Recipient Address</Label>
+                    <Input
+                      id="recipient-address"
+                      value={newPackage.recipient_address}
+                      onChange={(e) => setNewPackage({ ...newPackage, recipient_address: e.target.value })}
+                      placeholder="Enter recipient address"
+                    />
+                  </div>
+                </div>
+
+                {/* Package Details */}
+                <div className="space-y-3">
+                  <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Package Details</h3>
+                  <div>
+                    <Label htmlFor="currentLocation">Current Location</Label>
+                    <Input
+                      id="currentLocation"
+                      value={newPackage.current_location}
+                      onChange={(e) => setNewPackage({ ...newPackage, current_location: e.target.value })}
+                      placeholder="e.g., Chicago, IL Hub"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="destination">Destination</Label>
+                    <Input
+                      id="destination"
+                      value={newPackage.destination}
+                      onChange={(e) => setNewPackage({ ...newPackage, destination: e.target.value })}
+                      placeholder="e.g., New York, NY"
+                    />
+                  </div>
+
+                  <div>
+                    <Label htmlFor="estimatedDelivery">Estimated Delivery</Label>
+                    <Input
+                      id="estimatedDelivery"
+                      value={newPackage.estimated_delivery}
+                      onChange={(e) => setNewPackage({ ...newPackage, estimated_delivery: e.target.value })}
+                      placeholder="e.g., Tomorrow by 6:00 PM"
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="weight">Weight</Label>
+                      <Input
+                        id="weight"
+                        value={newPackage.weight}
+                        onChange={(e) => setNewPackage({ ...newPackage, weight: e.target.value })}
+                        placeholder="e.g., 2.5 lbs"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="dimensions">Dimensions</Label>
+                      <Input
+                        id="dimensions"
+                        value={newPackage.dimensions}
+                        onChange={(e) => setNewPackage({ ...newPackage, dimensions: e.target.value })}
+                        placeholder="e.g., 12x8x4"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <Label htmlFor="service">Service Type</Label>
+                    <Select
+                      value={newPackage.service_type}
+                      onValueChange={(value) => setNewPackage({ ...newPackage, service_type: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Express Shipping">Express Shipping</SelectItem>
+                        <SelectItem value="Standard Shipping">Standard Shipping</SelectItem>
+                        <SelectItem value="Overnight">Overnight</SelectItem>
+                        <SelectItem value="Ground">Ground</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <Button onClick={handleCreatePackage} className="w-full bg-orange-600 hover:bg-orange-700">
@@ -480,28 +576,27 @@ export default function AdminDashboard() {
                     </Dialog>
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+                  <div className="grid md:grid-cols-3 gap-4 text-sm text-gray-600">
                     <div>
-                      <p>
-                        <strong>Recipient:</strong> {pkg.recipient_name}
-                      </p>
-                      <p>
-                        <strong>Current Location:</strong> {pkg.current_location}
-                      </p>
-                      <p>
-                        <strong>Destination:</strong> {pkg.destination}
-                      </p>
+                      <p className="font-medium text-gray-800 mb-2">Sender</p>
+                      <p><strong>Name:</strong> {pkg.sender_name}</p>
+                      <p><strong>Address:</strong> {pkg.sender_address}</p>
+                      {pkg.sender_email && <p><strong>Email:</strong> {pkg.sender_email}</p>}
+                      {pkg.sender_phone && <p><strong>Phone:</strong> {pkg.sender_phone}</p>}
                     </div>
                     <div>
-                      <p>
-                        <strong>Service:</strong> {pkg.service_type}
-                      </p>
-                      <p>
-                        <strong>Weight:</strong> {pkg.weight || "N/A"}
-                      </p>
-                      <p>
-                        <strong>Last Update:</strong> {new Date(pkg.updated_at).toLocaleString()}
-                      </p>
+                      <p className="font-medium text-gray-800 mb-2">Recipient</p>
+                      <p><strong>Name:</strong> {pkg.recipient_name}</p>
+                      <p><strong>Address:</strong> {pkg.recipient_address}</p>
+                      {pkg.recipient_email && <p><strong>Email:</strong> {pkg.recipient_email}</p>}
+                      {pkg.recipient_phone && <p><strong>Phone:</strong> {pkg.recipient_phone}</p>}
+                    </div>
+                    <div>
+                      <p className="font-medium text-gray-800 mb-2">Package Details</p>
+                      <p><strong>Service:</strong> {pkg.service_type}</p>
+                      <p><strong>Weight:</strong> {pkg.weight || "N/A"}</p>
+                      <p><strong>Current Location:</strong> {pkg.current_location}</p>
+                      <p><strong>Last Update:</strong> {new Date(pkg.updated_at).toLocaleString()}</p>
                     </div>
                   </div>
                 </div>
