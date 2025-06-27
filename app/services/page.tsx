@@ -257,8 +257,8 @@ export default function ServicesPage() {
             </Link>
             <Button
               size="lg"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-orange-600"
+              variant="secondary"
+              className="bg-white text-orange-600 hover:bg-gray-100"
             >
               Request Quote
             </Button>
