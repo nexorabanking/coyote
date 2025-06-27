@@ -6,10 +6,12 @@ export const metadata: Metadata = {
   description: 'Coyote Logistics',
   generator: 'Coyote Logistics',
   icons: {
-    icon: '/favicon.svg',
-    other: [
-      { rel: 'icon', url: '/favicon.png', type: 'image/png' }
-    ]
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
   },
 }
 
