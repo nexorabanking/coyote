@@ -1,7 +1,7 @@
 import { Navigation } from "@/components/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Users, Award, Globe, Truck, Target, Heart } from "lucide-react"
+import { Users, Award, Globe, Truck, Target, Heart, Phone, Mail, MapPin } from "lucide-react"
 import Image from "next/image"
 
 export default function AboutPage() {
@@ -233,8 +233,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2">
-                <Truck className="h-8 w-8 text-orange-600" />
-                <span className="text-xl font-bold">Coyote Logistics</span>
+                <img src="/coyote.png" alt="Coyote Logistics Logo" className="h-10 w-auto" />
               </div>
               <p className="text-gray-400">
                 Your trusted partner for reliable and efficient logistics solutions worldwide.
@@ -278,13 +277,16 @@ export default function AboutPage() {
               <h3 className="text-lg font-semibold">Contact Info</h3>
               <div className="space-y-2 text-gray-400">
                 <div className="flex items-center gap-2">
-                  <span>1-800-COYOTE-1</span>
+                  <Phone className="h-4 w-4" />
+                  <span>+57 325 COYOTE01</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span>info@coyotelogistics.com</span>
+                  <Mail className="h-4 w-4" />
+                  <span>support@shipcoyotelogistics.com</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span>Chicago, IL</span>
+                  <MapPin className="h-4 w-4" />
+                  <span>Cra. 38 #9-13 esquina segundo piso, Bogotá, Colombia</span>
                 </div>
               </div>
             </div>

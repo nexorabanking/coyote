@@ -190,8 +190,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-900 mb-2">Phone Support</h3>
-                        <p className="text-gray-600 mb-1">1-800-COYOTE-1</p>
-                        <p className="text-gray-600 mb-1">+1 (312) 555-0123</p>
+                        <p className="text-gray-600 mb-1">+57 325 COYOTE01</p>
                         <p className="text-sm text-gray-500">Available 24/7</p>
                       </div>
                     </div>
@@ -206,8 +205,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-900 mb-2">Email Support</h3>
-                        <p className="text-gray-600 mb-1">info@coyotelogistics.com</p>
-                        <p className="text-gray-600 mb-1">support@coyotelogistics.com</p>
+                        <p className="text-gray-600 mb-1">support@shipcoyotelogistics.com</p>
                         <p className="text-sm text-gray-500">Response within 2 hours</p>
                       </div>
                     </div>
@@ -222,9 +220,8 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-900 mb-2">Headquarters</h3>
-                        <p className="text-gray-600 mb-1">1234 Logistics Drive</p>
-                        <p className="text-gray-600 mb-1">Chicago, IL 60601</p>
-                        <p className="text-sm text-gray-500">United States</p>
+                        <p className="text-gray-600 mb-1">Cra. 38 #9-13 esquina segundo piso, Bogotá</p>
+                        <p className="text-sm text-gray-500">Colombia</p>
                       </div>
                     </div>
                   </CardContent>
@@ -238,8 +235,8 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <h3 className="font-semibold text-gray-900 mb-2">Business Hours</h3>
-                        <p className="text-gray-600 mb-1">Monday - Friday: 8:00 AM - 8:00 PM CST</p>
-                        <p className="text-gray-600 mb-1">Saturday: 9:00 AM - 5:00 PM CST</p>
+                        <p className="text-gray-600 mb-1">Monday - Friday: 8:00 AM - 8:00 PM</p>
+                        <p className="text-gray-600 mb-1">Saturday: 9:00 AM - 5:00 PM</p>
                         <p className="text-sm text-gray-500">Emergency support available 24/7</p>
                       </div>
                     </div>
@@ -308,9 +305,8 @@ export default function ContactPage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8">
             <div className="space-y-4">
-              <div className="flex items-center gap-2">
-                <Truck className="h-8 w-8 text-orange-600" />
-                <span className="text-xl font-bold">Coyote Logistics</span>
+            <div className="flex items-center gap-2">
+                <img src="/coyote.png" alt="Coyote Logistics Logo" className="h-10 w-auto" />
               </div>
               <p className="text-gray-400">
                 Your trusted partner for reliable and efficient logistics solutions worldwide.

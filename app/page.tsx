@@ -21,7 +21,7 @@ export default function HomePage() {
                 <Badge variant="outline" className="bg-orange-100 text-orange-800 border-orange-200">
                   Trusted Logistics Partner
                 </Badge>
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                   Track Your Package with <span className="text-orange-600">Coyote Logistics</span>
                 </h1>
                 <p className="text-xl text-gray-600 leading-relaxed">
@@ -243,15 +243,15 @@ export default function HomePage() {
               <div className="space-y-2 text-gray-400">
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4" />
-                  <span>1-800-COYOTE-1</span>
+                  <span>+57 325 COYOTE01</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Mail className="h-4 w-4" />
-                  <span>info@coyotelogistics.com</span>
+                  <span>support@shipcoyotelogistics.com</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
-                  <span>Chicago, IL</span>
+                  <span>Cra. 38 #9-13 esquina segundo piso, Bogotá, Colombia</span>
                 </div>
               </div>
             </div>
