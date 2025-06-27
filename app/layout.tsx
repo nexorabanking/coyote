@@ -6,7 +6,10 @@ export const metadata: Metadata = {
   description: 'Coyote Logistics',
   generator: 'Coyote Logistics',
   icons: {
-    icon: '/favicon.png',
+    icon: '/favicon.svg',
+    other: [
+      { rel: 'icon', url: '/favicon.png', type: 'image/png' }
+    ]
   },
 }
 

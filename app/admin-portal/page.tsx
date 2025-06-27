@@ -60,8 +60,7 @@ export default function AdminLoginPage() {
       <Card className="w-full max-w-md border-0 shadow-2xl">
         <CardHeader className="text-center space-y-4">
           <div className="flex items-center justify-center gap-2">
-            <Truck className="h-8 w-8 text-orange-600" />
-            <span className="text-2xl font-bold text-gray-900">Coyote Logistics</span>
+          <img src="/coyote.png" alt="Coyote Logistics Logo" className="h-10 w-auto" />
           </div>
           <div className="space-y-2">
             <CardTitle className="text-2xl">Admin Portal</CardTitle>
@@ -114,12 +113,12 @@ export default function AdminLoginPage() {
             </Button>
           </form>
 
-          <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+          {/* <div className="mt-6 p-4 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600 mb-2">Demo Credentials (pre-filled):</p>
             <p className="text-xs text-gray-500">Email: admin@coyotelogistics.com</p>
             <p className="text-xs text-gray-500">Password: admin123</p>
             <p className="text-xs text-orange-600 mt-2">Note: Make sure to run the database setup scripts first!</p>
-          </div>
+          </div> */}
         </CardContent>
       </Card>
     </div>
