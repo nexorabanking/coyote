@@ -59,7 +59,7 @@ export default function ServicesPage() {
             </div>
             <div className="relative">
               <Image
-                src="/placeholder.svg?height=400&width=500"
+                src="/express.jpg"
                 alt="Express shipping"
                 width={500}
                 height={400}
@@ -71,7 +71,7 @@ export default function ServicesPage() {
           <div className="grid lg:grid-cols-2 gap-12 mb-20">
             <div className="relative order-2 lg:order-1">
               <Image
-                src="/placeholder.svg?height=400&width=500"
+                src="/frieght.jpg"
                 alt="Freight services"
                 width={500}
                 height={400}
@@ -133,7 +133,7 @@ export default function ServicesPage() {
             </div>
             <div className="relative">
               <Image
-                src="/placeholder.svg?height=400&width=500"
+                src="/warehouse.jpg"
                 alt="Warehousing"
                 width={500}
                 height={400}
