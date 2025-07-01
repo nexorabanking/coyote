@@ -17,8 +17,9 @@ interface AdminPackage {
   id: string
   tracking_id: string
   sender_name: string
-  sender_address: string
   recipient_name: string
+  recipient_email: string | null
+  recipient_phone: string | null
   recipient_address: string
   current_location: string
   destination: string
@@ -39,8 +40,9 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [newPackage, setNewPackage] = useState({
     sender_name: "",
-    sender_address: "",
     recipient_name: "",
+    recipient_email: "",
+    recipient_phone: "",
     recipient_address: "",
     current_location: "",
     destination: "",
@@ -48,7 +50,7 @@ export default function AdminDashboard() {
     weight: "",
     dimensions: "",
     service_type: "Standard Shipping",
-    status: "Package Picked Up",
+    status: "Awaiting shipment",
   })
   const router = useRouter()
 
@@ -90,8 +92,9 @@ export default function AdminDashboard() {
         setPackages([data.package, ...packages])
         setNewPackage({
           sender_name: "",
-          sender_address: "",
           recipient_name: "",
+          recipient_email: "",
+          recipient_phone: "",
           recipient_address: "",
           current_location: "",
           destination: "",
@@ -99,7 +102,7 @@ export default function AdminDashboard() {
           weight: "",
           dimensions: "",
           service_type: "Standard Shipping",
-          status: "Package Picked Up",
+          status: "Awaiting shipment",
         })
         setIsCreateDialogOpen(false)
         toast({
@@ -190,8 +193,9 @@ export default function AdminDashboard() {
     (pkg) =>
       pkg.tracking_id.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.sender_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pkg.sender_address.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.recipient_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      (pkg.recipient_email && pkg.recipient_email.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (pkg.recipient_phone && pkg.recipient_phone.toLowerCase().includes(searchTerm.toLowerCase())) ||
       pkg.recipient_address.toLowerCase().includes(searchTerm.toLowerCase()) ||
       pkg.destination.toLowerCase().includes(searchTerm.toLowerCase()),
   )
@@ -200,12 +204,26 @@ export default function AdminDashboard() {
     switch (status.toLowerCase()) {
       case "delivered":
         return "bg-green-100 text-green-800 border-green-200"
-      case "in transit":
-        return "bg-blue-100 text-blue-800 border-blue-200"
       case "out for delivery":
         return "bg-orange-100 text-orange-800 border-orange-200"
-      case "package picked up":
+      case "arrived at recipient distribution center":
+        return "bg-blue-100 text-blue-800 border-blue-200"
+      case "customs clearance completed":
+        return "bg-indigo-100 text-indigo-800 border-indigo-200"
+      case "flight departure":
         return "bg-purple-100 text-purple-800 border-purple-200"
+      case "awaiting flight":
+        return "bg-cyan-100 text-cyan-800 border-cyan-200"
+      case "order shipped":
+        return "bg-teal-100 text-teal-800 border-teal-200"
+      case "awaiting shipment":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+      case "picked up by customs for clearance":
+        return "bg-amber-100 text-amber-800 border-amber-200"
+      case "on hold clearance":
+        return "bg-red-100 text-red-800 border-red-200"
+      case "exception":
+        return "bg-red-100 text-red-800 border-red-200"
       default:
         return "bg-gray-100 text-gray-800 border-gray-200"
     }
@@ -262,12 +280,32 @@ export default function AdminDashboard() {
           <Card className="border-0 shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center">
+                  <Clock className="h-6 w-6 text-yellow-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">
+                    {packages.filter((p) => p.status === "Awaiting shipment").length}
+                  </p>
+                  <p className="text-sm text-gray-600">Awaiting Shipment</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-0 shadow-lg">
+            <CardContent className="p-6">
+              <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
                   <Truck className="h-6 w-6 text-blue-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900">
-                    {packages.filter((p) => p.status === "In Transit").length}
+                    {packages.filter((p) => 
+                      p.status === "Order shipped" || 
+                      p.status === "Awaiting flight" || 
+                      p.status === "Flight departure"
+                    ).length}
                   </p>
                   <p className="text-sm text-gray-600">In Transit</p>
                 </div>
@@ -286,22 +324,6 @@ export default function AdminDashboard() {
                     {packages.filter((p) => p.status === "Delivered").length}
                   </p>
                   <p className="text-sm text-gray-600">Delivered</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-0 shadow-lg">
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                  <Clock className="h-6 w-6 text-orange-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">
-                    {packages.filter((p) => p.status === "Out for Delivery").length}
-                  </p>
-                  <p className="text-sm text-gray-600">Out for Delivery</p>
                 </div>
               </div>
             </CardContent>
@@ -346,16 +368,6 @@ export default function AdminDashboard() {
                         placeholder="Enter sender name"
                       />
                     </div>
-
-                    <div>
-                      <Label htmlFor="sender-address">Sender Address</Label>
-                      <Input
-                        id="sender-address"
-                        value={newPackage.sender_address}
-                        onChange={(e) => setNewPackage({ ...newPackage, sender_address: e.target.value })}
-                        placeholder="Enter sender address"
-                      />
-                    </div>
                   </div>
 
                   {/* Recipient Information */}
@@ -368,6 +380,28 @@ export default function AdminDashboard() {
                         value={newPackage.recipient_name}
                         onChange={(e) => setNewPackage({ ...newPackage, recipient_name: e.target.value })}
                         placeholder="Enter recipient name"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="recipient-email">Recipient Email</Label>
+                      <Input
+                        id="recipient-email"
+                        type="email"
+                        value={newPackage.recipient_email}
+                        onChange={(e) => setNewPackage({ ...newPackage, recipient_email: e.target.value })}
+                        placeholder="Enter recipient email"
+                      />
+                    </div>
+
+                    <div>
+                      <Label htmlFor="recipient-phone">Recipient Phone</Label>
+                      <Input
+                        id="recipient-phone"
+                        type="tel"
+                        value={newPackage.recipient_phone}
+                        onChange={(e) => setNewPackage({ ...newPackage, recipient_phone: e.target.value })}
+                        placeholder="Enter recipient phone"
                       />
                     </div>
 
@@ -457,6 +491,31 @@ export default function AdminDashboard() {
                       </SelectContent>
                     </Select>
                   </div>
+
+                  <div>
+                    <Label htmlFor="status">Initial Status</Label>
+                    <Select
+                      value={newPackage.status}
+                      onValueChange={(value) => setNewPackage({ ...newPackage, status: value })}
+                    >
+                      <SelectTrigger>
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="Awaiting shipment">Awaiting shipment</SelectItem>
+                        <SelectItem value="Order shipped">Order shipped</SelectItem>
+                        <SelectItem value="Awaiting flight">Awaiting flight</SelectItem>
+                        <SelectItem value="Flight departure">Flight departure</SelectItem>
+                        <SelectItem value="Picked up by customs for clearance">Picked up by customs for clearance</SelectItem>
+                        <SelectItem value="On hold clearance">On hold clearance</SelectItem>
+                        <SelectItem value="Customs clearance completed">Customs clearance completed</SelectItem>
+                        <SelectItem value="Arrived at recipient distribution center">Arrived at recipient distribution center</SelectItem>
+                        <SelectItem value="Out for Delivery">Out for Delivery</SelectItem>
+                        <SelectItem value="Delivered">Delivered</SelectItem>
+                        <SelectItem value="Exception">Exception</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <Button onClick={handleCreatePackage} className="w-full bg-orange-600 hover:bg-orange-700">
@@ -511,8 +570,14 @@ export default function AdminDashboard() {
                                     <SelectValue />
                                   </SelectTrigger>
                                   <SelectContent>
-                                    <SelectItem value="Package Picked Up">Package Picked Up</SelectItem>
-                                    <SelectItem value="In Transit">In Transit</SelectItem>
+                                    <SelectItem value="Awaiting shipment">Awaiting shipment</SelectItem>
+                                    <SelectItem value="Order shipped">Order shipped</SelectItem>
+                                    <SelectItem value="Awaiting flight">Awaiting flight</SelectItem>
+                                    <SelectItem value="Flight departure">Flight departure</SelectItem>
+                                    <SelectItem value="Picked up by customs for clearance">Picked up by customs for clearance</SelectItem>
+                                    <SelectItem value="On hold clearance">On hold clearance</SelectItem>
+                                    <SelectItem value="Customs clearance completed">Customs clearance completed</SelectItem>
+                                    <SelectItem value="Arrived at recipient distribution center">Arrived at recipient distribution center</SelectItem>
                                     <SelectItem value="Out for Delivery">Out for Delivery</SelectItem>
                                     <SelectItem value="Delivered">Delivered</SelectItem>
                                     <SelectItem value="Exception">Exception</SelectItem>
@@ -582,11 +647,12 @@ export default function AdminDashboard() {
                     <div>
                       <p className="font-medium text-gray-800 mb-2">Sender</p>
                       <p><strong>Name:</strong> {pkg.sender_name}</p>
-                      <p><strong>Address:</strong> {pkg.sender_address}</p>
                     </div>
                     <div>
                       <p className="font-medium text-gray-800 mb-2">Recipient</p>
                       <p><strong>Name:</strong> {pkg.recipient_name}</p>
+                      {pkg.recipient_email && <p><strong>Email:</strong> {pkg.recipient_email}</p>}
+                      {pkg.recipient_phone && <p><strong>Phone:</strong> {pkg.recipient_phone}</p>}
                       <p><strong>Address:</strong> {pkg.recipient_address}</p>
                     </div>
                     <div>

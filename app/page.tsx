@@ -155,15 +155,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-4 gap-8 text-center">
             <div className="space-y-2">
-              <div className="text-4xl md:text-5xl font-bold">10M+</div>
+              <div className="text-4xl md:text-5xl font-bold">6.2M+</div>
               <div className="text-orange-100">Packages Delivered</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl md:text-5xl font-bold">50+</div>
+              <div className="text-4xl md:text-5xl font-bold">37+</div>
               <div className="text-orange-100">Countries Served</div>
             </div>
             <div className="space-y-2">
-              <div className="text-4xl md:text-5xl font-bold">99.9%</div>
+              <div className="text-4xl md:text-5xl font-bold">98.3%</div>
               <div className="text-orange-100">On-time Delivery</div>
             </div>
             <div className="space-y-2">

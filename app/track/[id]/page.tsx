@@ -21,6 +21,8 @@ interface TrackingData {
   }
   recipient: {
     name: string
+    email: string | null
+    phone: string | null
     address: string
   }
   timeline: Array<{
@@ -69,10 +71,26 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
     switch (status.toLowerCase()) {
       case "delivered":
         return "bg-green-100 text-green-800 border-green-200"
-      case "in transit":
-        return "bg-blue-100 text-blue-800 border-blue-200"
       case "out for delivery":
         return "bg-orange-100 text-orange-800 border-orange-200"
+      case "arrived at recipient distribution center":
+        return "bg-blue-100 text-blue-800 border-blue-200"
+      case "customs clearance completed":
+        return "bg-indigo-100 text-indigo-800 border-indigo-200"
+      case "flight departure":
+        return "bg-purple-100 text-purple-800 border-purple-200"
+      case "awaiting flight":
+        return "bg-cyan-100 text-cyan-800 border-cyan-200"
+      case "order shipped":
+        return "bg-teal-100 text-teal-800 border-teal-200"
+      case "awaiting shipment":
+        return "bg-yellow-100 text-yellow-800 border-yellow-200"
+      case "picked up by customs for clearance":
+        return "bg-amber-100 text-amber-800 border-amber-200"
+      case "on hold clearance":
+        return "bg-red-100 text-red-800 border-red-200"
+      case "exception":
+        return "bg-red-100 text-red-800 border-red-200"
       default:
         return "bg-gray-100 text-gray-800 border-gray-200"
     }
@@ -82,10 +100,26 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
     switch (status.toLowerCase()) {
       case "delivered":
         return <CheckCircle className="h-4 w-4" />
-      case "in transit":
-        return <Truck className="h-4 w-4" />
       case "out for delivery":
         return <Package className="h-4 w-4" />
+      case "arrived at recipient distribution center":
+        return <Truck className="h-4 w-4" />
+      case "customs clearance completed":
+        return <CheckCircle className="h-4 w-4" />
+      case "flight departure":
+        return <Truck className="h-4 w-4" />
+      case "awaiting flight":
+        return <Clock className="h-4 w-4" />
+      case "order shipped":
+        return <Truck className="h-4 w-4" />
+      case "awaiting shipment":
+        return <Clock className="h-4 w-4" />
+      case "picked up by customs for clearance":
+        return <Package className="h-4 w-4" />
+      case "on hold clearance":
+        return <Clock className="h-4 w-4" />
+      case "exception":
+        return <AlertCircle className="h-4 w-4" />
       default:
         return <Clock className="h-4 w-4" />
     }
@@ -204,13 +238,15 @@ export default function TrackingPage({ params }: { params: Promise<{ id: string 
                 <h3 className="font-medium text-gray-900 mb-3">Sender</h3>
                 <div className="space-y-2 text-sm">
                   <p><strong>Name:</strong> {trackingData.sender.name}</p>
-                  <p><strong>Address:</strong> {trackingData.sender.address}</p>
+                  {/* <p><strong>Address:</strong> {trackingData.sender.address}</p> */}
                 </div>
               </div>
               <div>
                 <h3 className="font-medium text-gray-900 mb-3">Recipient</h3>
                 <div className="space-y-2 text-sm">
                   <p><strong>Name:</strong> {trackingData.recipient.name}</p>
+                  <p><strong>Email:</strong> {trackingData.recipient.email || "N/A"}</p>
+                  <p><strong>Phone:</strong> {trackingData.recipient.phone || "N/A"}</p>
                   <p><strong>Address:</strong> {trackingData.recipient.address}</p>
                 </div>
               </div>

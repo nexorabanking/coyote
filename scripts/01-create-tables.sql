@@ -14,15 +14,16 @@ CREATE TABLE IF NOT EXISTS packages (
   tracking_id TEXT UNIQUE NOT NULL,
   -- Sender information
   sender_name TEXT NOT NULL,
-  sender_address TEXT NOT NULL,
   -- Recipient information
   recipient_name TEXT NOT NULL,
+  recipient_email TEXT,
+  recipient_phone TEXT,
   recipient_address TEXT NOT NULL,
   -- Package details
   current_location TEXT NOT NULL,
   destination TEXT NOT NULL,
   estimated_delivery TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'Package Picked Up',
+  status TEXT NOT NULL DEFAULT 'Awaiting shipment',
   weight TEXT,
   dimensions TEXT,
   service_type TEXT NOT NULL DEFAULT 'Standard Shipping',

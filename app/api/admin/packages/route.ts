@@ -61,8 +61,8 @@ export async function POST(request: NextRequest) {
       event_date: new Date().toISOString().split("T")[0],
       event_time: new Date().toTimeString().split(" ")[0],
       location: packageData.current_location,
-      status: packageData.status || "Package Picked Up",
-      description: `Package picked up from ${packageData.current_location}`,
+      status: packageData.status || "Awaiting shipment",
+      description: `Package status set to ${packageData.status || "Awaiting shipment"}`,
       completed: true,
     })
 

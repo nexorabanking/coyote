@@ -42,6 +42,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       },
       recipient: {
         name: packageData.recipient_name,
+        email: packageData.recipient_email,
+        phone: packageData.recipient_phone,
         address: packageData.recipient_address,
       },
       timeline: events.map((event) => ({
