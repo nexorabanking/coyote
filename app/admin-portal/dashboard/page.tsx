@@ -80,15 +80,43 @@ export default function AdminDashboard() {
   }
 
   const handleCreatePackage = async () => {
+    // Validate required fields
+    const requiredFields = [
+      'sender_name',
+      'recipient_name', 
+      'recipient_address',
+      'current_location',
+      'destination',
+      'estimated_delivery'
+    ]
+    
+    const missingFields = requiredFields.filter(field => !newPackage[field as keyof typeof newPackage])
+    
+    if (missingFields.length > 0) {
+      toast({
+        title: "Validation Error",
+        description: `Please fill in all required fields: ${missingFields.join(', ')}`,
+        variant: "destructive",
+      })
+      return
+    }
+
     try {
+      console.log("Submitting package data:", newPackage)
+      console.log("Package data JSON:", JSON.stringify(newPackage, null, 2))
+      
       const response = await fetch("/api/admin/packages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newPackage),
       })
 
+      console.log("Response status:", response.status)
+      console.log("Response headers:", Object.fromEntries(response.headers.entries()))
+
       if (response.ok) {
         const data = await response.json()
+        console.log("Success response:", data)
         setPackages([data.package, ...packages])
         setNewPackage({
           sender_name: "",
@@ -110,12 +138,15 @@ export default function AdminDashboard() {
           description: `New package created with tracking ID: ${data.package.tracking_id}`,
         })
       } else {
-        throw new Error("Failed to create package")
+        const errorData = await response.json()
+        console.error("Server error response:", errorData)
+        throw new Error(errorData.details || errorData.error || "Failed to create package")
       }
     } catch (error) {
+      console.error("Error creating package:", error)
       toast({
         title: "Error",
-        description: "Failed to create package",
+        description: error instanceof Error ? error.message : "Failed to create package",
         variant: "destructive",
       })
     }

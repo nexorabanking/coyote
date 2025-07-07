@@ -12,9 +12,11 @@ export type Database = {
         Row: {
           id: string
           tracking_id: string
+          sender_name: string
           recipient_name: string
           recipient_email: string | null
           recipient_phone: string | null
+          recipient_address: string
           current_location: string
           destination: string
           estimated_delivery: string
@@ -28,9 +30,11 @@ export type Database = {
         Insert: {
           id?: string
           tracking_id: string
+          sender_name: string
           recipient_name: string
           recipient_email?: string | null
           recipient_phone?: string | null
+          recipient_address: string
           current_location: string
           destination: string
           estimated_delivery: string
@@ -44,9 +48,11 @@ export type Database = {
         Update: {
           id?: string
           tracking_id?: string
+          sender_name?: string
           recipient_name?: string
           recipient_email?: string | null
           recipient_phone?: string | null
+          recipient_address?: string
           current_location?: string
           destination?: string
           estimated_delivery?: string
