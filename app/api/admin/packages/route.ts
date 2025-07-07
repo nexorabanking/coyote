@@ -39,26 +39,58 @@ export async function POST(request: NextRequest) {
     const packageData = await request.json()
     console.log("Received package data:", packageData)
 
-    // Generate unique tracking ID
-    const trackingId = `CL${Math.random().toString(36).substr(2, 9).toUpperCase()}`
+    // Generate unique tracking ID with timestamp to ensure uniqueness
+    const timestamp = Date.now().toString(36)
+    const randomPart = Math.random().toString(36).substr(2, 6).toUpperCase()
+    const trackingId = `CL${timestamp}${randomPart}`
     console.log("Generated tracking ID:", trackingId)
+
+    // Check if tracking ID already exists
+    const { data: existingPackage, error: checkError } = await supabase
+      .from("packages")
+      .select("tracking_id")
+      .eq("tracking_id", trackingId)
+      .single()
+
+    if (checkError && checkError.code !== 'PGRST116') { // PGRST116 is "not found" error
+      console.error("Error checking existing tracking ID:", checkError)
+      throw checkError
+    }
+
+    if (existingPackage) {
+      console.error("Tracking ID already exists:", trackingId)
+      return NextResponse.json({ 
+        error: "Tracking ID collision, please try again" 
+      }, { status: 409 })
+    }
 
     // Prepare the data for insertion
     const insertData = {
       tracking_id: trackingId,
-      sender_name: packageData.sender_name,
-      recipient_name: packageData.recipient_name,
-      recipient_email: packageData.recipient_email || null,
-      recipient_phone: packageData.recipient_phone || null,
-      recipient_address: packageData.recipient_address,
-      current_location: packageData.current_location,
-      destination: packageData.destination,
-      estimated_delivery: packageData.estimated_delivery,
-      status: packageData.status || "Awaiting shipment",
-      weight: packageData.weight || null,
-      dimensions: packageData.dimensions || null,
-      service_type: packageData.service_type || "Standard Shipping",
+      sender_name: packageData.sender_name?.trim() || '',
+      recipient_name: packageData.recipient_name?.trim() || '',
+      recipient_email: packageData.recipient_email?.trim() || null,
+      recipient_phone: packageData.recipient_phone?.trim() || null,
+      recipient_address: packageData.recipient_address?.trim() || '',
+      current_location: packageData.current_location?.trim() || '',
+      destination: packageData.destination?.trim() || '',
+      estimated_delivery: packageData.estimated_delivery?.trim() || '',
+      status: packageData.status?.trim() || "Awaiting shipment",
+      weight: packageData.weight?.trim() || null,
+      dimensions: packageData.dimensions?.trim() || null,
+      service_type: packageData.service_type?.trim() || "Standard Shipping",
       updated_at: new Date().toISOString(),
+    }
+
+    // Validate required fields
+    const requiredFields = ['sender_name', 'recipient_name', 'recipient_address', 'current_location', 'destination', 'estimated_delivery']
+    const missingFields = requiredFields.filter(field => !insertData[field as keyof typeof insertData])
+    
+    if (missingFields.length > 0) {
+      return NextResponse.json({ 
+        error: "Missing required fields", 
+        details: `Required fields missing: ${missingFields.join(', ')}` 
+      }, { status: 400 })
     }
 
     console.log("Inserting package data:", insertData)
@@ -71,6 +103,12 @@ export async function POST(request: NextRequest) {
 
     if (error) {
       console.error("Supabase error:", error)
+      if (error.code === '23505') { // Unique constraint violation
+        return NextResponse.json({ 
+          error: "Tracking ID already exists, please try again",
+          details: error.message 
+        }, { status: 409 })
+      }
       throw error
     }
 
