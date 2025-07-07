@@ -355,7 +355,7 @@ export default function AdminDashboard() {
               </DialogHeader>
               <div className="space-y-6">
                 {/* Sender and Recipient Information */}
-                <div className="grid md:grid-cols-2 gap-6">
+                <div className="grid gap-6">
                   {/* Sender Information */}
                   <div className="space-y-3">
                     <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Sender Information</h3>
@@ -369,10 +369,14 @@ export default function AdminDashboard() {
                       />
                     </div>
                   </div>
+                  </div>
 
                   {/* Recipient Information */}
-                  <div className="space-y-3">
+                  <div className="grid gap-6">
+                  <div className="space-y-6">
                     <h3 className="text-sm font-medium text-gray-700 border-b pb-1">Recipient Information</h3>
+
+                    <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <Label htmlFor="recipient-name">Recipient Name</Label>
                       <Input
@@ -393,7 +397,8 @@ export default function AdminDashboard() {
                         placeholder="Enter recipient email"
                       />
                     </div>
-
+                    </div>
+                    <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <Label htmlFor="recipient-phone">Recipient Phone</Label>
                       <Input
@@ -413,6 +418,7 @@ export default function AdminDashboard() {
                         onChange={(e) => setNewPackage({ ...newPackage, recipient_address: e.target.value })}
                         placeholder="Enter recipient address"
                       />
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -473,7 +479,7 @@ export default function AdminDashboard() {
                       />
                     </div>
                   </div>
-
+                  <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <Label htmlFor="service">Service Type</Label>
                     <Select
@@ -516,6 +522,7 @@ export default function AdminDashboard() {
                       </SelectContent>
                     </Select>
                   </div>
+                </div>
                 </div>
 
                 <Button onClick={handleCreatePackage} className="w-full bg-orange-600 hover:bg-orange-700">
